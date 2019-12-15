@@ -1,0 +1,15 @@
+{
+  "name": "wasm-string-reverse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Dorin Fodor",
+  "license": "MIT",
+  "dependencies": {
+    "inline-webassembly": "^1.0.6",
+    "jest": "^24.9.0"
+  }
+}
