@@ -134,7 +134,7 @@ const reverse = async (originalString) => {
             
             ;; break loop if iterator reaches string length
             (br_if 1
-              (i32.ge_s
+              (i32.ge_u
                 (get_local $iterator)
                 (get_local $original_str_len)
               )
