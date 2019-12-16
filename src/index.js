@@ -41,8 +41,8 @@ const reverse = async (originalString) => {
                 (i32.load8_s
                   (i32.add
                     (get_local $iterator)
-                    (get_local $original_str_ref)  
-                  )  
+                    (get_local $original_str_ref)
+                  )
                 )
                 (i32.const 0)
               )
@@ -101,20 +101,25 @@ const reverse = async (originalString) => {
           
         (block
           (loop
+            ;; increment iterator by 1 for every loop iteration
+            (set_local $iterator
+              (i32.add
+                (get_local $iterator)
+                (i32.const 1)  
+              )  
+            )
+
             ;; store one character from original string to resulting string
             (i32.store
               (get_local $write_to)
               ;; load 1 byte and sign-extend i8 to i32
               (i32.load8_s
                 (i32.sub
-                  (i32.sub
-                    (i32.add
-                      (get_local $original_str_ref)
-                      (get_local $original_str_len)
-                    )
-                    (get_local $iterator)
+                  (i32.add
+                    (get_local $original_str_ref)
+                    (get_local $original_str_len)
                   )
-                  (i32.const 1)
+                  (get_local $iterator)
                 )
               )  
             )
@@ -123,14 +128,6 @@ const reverse = async (originalString) => {
             (set_local $write_to
               (i32.add
                 (get_local $write_to)
-                (i32.const 1)  
-              )  
-            )
-  
-            ;; increment iterator by 1 for every loop iteration
-            (set_local $iterator
-              (i32.add
-                (get_local $iterator)
                 (i32.const 1)  
               )  
             )
