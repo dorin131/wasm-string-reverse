@@ -1,6 +1,6 @@
 const iw = require('inline-webassembly');
 
-const wasm = (async () => {
+const wasm = (() => {
   const code = `;;wasm
     (module
       (memory $0 1)
@@ -155,7 +155,7 @@ const wasm = (async () => {
     )
   `;
 
-  return await iw(code);
+  return iw(code);
 })();
 
 const reverse = async (originalString) => {
