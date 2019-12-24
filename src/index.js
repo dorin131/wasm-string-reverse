@@ -1,6 +1,6 @@
 const iw = require('inline-webassembly');
 
-const reverse = async (originalString) => {
+const wasm = (() => {
   const code = `;;wasm
     (module
       (memory $0 1)
@@ -11,7 +11,7 @@ const reverse = async (originalString) => {
       (func (export "reverse") (param $original_str_ref i32) (result i32)
 
         (local $original_str_len i32)
-  
+
         ;; declaring new variable to store result pointer
         (local $reversed_str_ref i32)
 
@@ -60,7 +60,7 @@ const reverse = async (originalString) => {
             (br 0)
           )  
         )
-  
+
         (set_local $original_str_len
           (get_local $iterator)  
         )
@@ -93,7 +93,7 @@ const reverse = async (originalString) => {
         (set_local $iterator
           (i32.const 0)  
         )
-  
+
         ;; we'll start writing to the start of the result
         (set_local $write_to
           (get_local $reversed_str_ref)  
@@ -123,7 +123,7 @@ const reverse = async (originalString) => {
                 )
               )  
             )
-  
+
             ;; increment position to write to on next loop iteration
             (set_local $write_to
               (i32.add
@@ -144,7 +144,7 @@ const reverse = async (originalString) => {
             (br 0)
           )
         )
-  
+
         (;
           --------------------------------------------------------------
           Returning result which contains pointer to the reversed string
@@ -154,9 +154,12 @@ const reverse = async (originalString) => {
       )  
     )
   `;
-  
-  const wasmModule = await iw(code);
-  
+
+  return iw(code);
+})();
+
+const reverse = async (originalString) => {
+  const wasmModule = await wasm;
   const originalStringRef = wasmModule.createString(originalString);
   const reversedStringRef = wasmModule.reverse(originalStringRef);
   return wasmModule.readString(reversedStringRef);
